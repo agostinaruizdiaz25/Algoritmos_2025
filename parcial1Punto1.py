@@ -18,7 +18,7 @@ def lista_superheroes(lista, indice=0):
     
 #Prueba 
 encontrado = buscar_capitanamerica(superheroes, "Capitan America")
-print ("¿Se ha encontrado al Capitan America", encontrado)
+print ("¿Se ha encontrado al Capitan America?", encontrado)
 
 print("lista de personajes")
 lista_superheroes(superheroes)
