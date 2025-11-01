@@ -1,63 +1,179 @@
-# Lista de superhéroes
-superheroes = [
-    {"nombre": "Linterna Verde", "año": 1940, "casa": "DC", "bio": "Usa un anillo de poder con su traje especial."},
-    {"nombre": "Wolverine", "año": 1974, "casa": "Marvel", "bio": "Mutante con garras de adamantium y factor curativo."},
-    {"nombre": "Dr. Strange", "año": 1963, "casa": "DC", "bio": "Hechicero supremo, maestro de las artes místicas."},
-    {"nombre": "Capitana Marvel", "año": 1968, "casa": "Marvel", "bio": "Piloto con poderes cósmicos y traje militar."},
-    {"nombre": "Mujer Maravilla", "año": 1941, "casa": "DC", "bio": "Guerrera amazona con armadura mágica."},
-    {"nombre": "Flash", "año": 1940, "casa": "DC", "bio": "El hombre más rápido del mundo."},
-    {"nombre": "Star-Lord", "año": 1976, "casa": "Marvel", "bio": "Aventurero espacial con máscara y traje especial."},
-    {"nombre": "Batman", "año": 1939, "casa": "DC", "bio": "El caballero oscuro con traje y gadgets."},
-    {"nombre": "Spider-Man", "año": 1962, "casa": "Marvel", "bio": "Joven héroe con traje arácnido."},
-    {"nombre": "Superman", "año": 1938, "casa": "DC", "bio": "El hombre de acero con armadura invulnerable."}
+# Clase Nodo
+class Node:
+    def __init__(self, value):
+        self.value = value
+        self.next = None
+
+# Clase Superhero (modelo de cada héroe)
+class Superhero:
+    def __init__(self, nombre, año, casa, bio):
+        self.name = nombre
+        self.first_appearance = año
+        self.comic_house = casa
+        self.short_bio = bio
+
+    def __str__(self):
+        return f"{self.name} ({self.comic_house}, {self.first_appearance})"
+
+# Clase LinkedList para manejar la lista de superhéroes
+
+class LinkedList:
+    def __init__(self):
+        self.head = None
+
+    def append(self, value):
+        new_node = Node(value)
+        if not self.head:
+            self.head = new_node
+        else:
+            current = self.head
+            while current.next:
+                current = current.next
+            current.next = new_node
+
+    def delete_value(self, value, field):
+        prev = None
+        current = self.head
+        while current:
+            if getattr(current.value, field) == value:
+                if prev:
+                    prev.next = current.next
+                else:
+                    self.head = current.next
+                return f"{value} eliminado correctamente."
+            prev = current
+            current = current.next
+        return f"{value} no se encontró."
+
+    def search(self, value, field):
+        index = 0
+        current = self.head
+        while current:
+            if getattr(current.value, field) == value:
+                return index
+            index += 1
+            current = current.next
+        return None
+
+    def __getitem__(self, index):
+        current = self.head
+        i = 0
+        while current:
+            if i == index:
+                return current.value
+            current = current.next
+            i += 1
+        return None
+
+    def show(self):
+        current = self.head
+        while current:
+            print(current.value)
+            current = current.next
+
+    def __iter__(self):
+        current = self.head
+        while current:
+            yield current.value
+            current = current.next
+
+# Crear lista de superhéroes
+data = [
+    ("Linterna Verde", 1940, "DC", "Usa un anillo de poder con su traje especial."),
+    ("Wolverine", 1974, "Marvel", "Mutante con garras de adamantium y factor curativo."),
+    ("Dr. Strange", 1963, "Marvel", "Hechicero supremo, maestro de las artes místicas."),
+    ("Capitana Marvel", 1968, "Marvel", "Piloto con poderes cósmicos y traje militar."),
+    ("Mujer Maravilla", 1941, "DC", "Guerrera amazona con armadura mágica."),
+    ("Flash", 1940, "DC", "El hombre más rápido del mundo."),
+    ("Star-Lord", 1976, "Marvel", "Aventurero espacial con máscara y traje especial."),
+    ("Batman", 1939, "DC", "El caballero oscuro con traje y gadgets."),
+    ("Spider-Man", 1962, "Marvel", "Joven héroe con traje arácnido."),
+    ("Superman", 1938, "DC", "El hombre de acero con armadura invulnerable.")
 ]
 
-#Subindice A. eliminar  a Linterna Verde
-superheroes = [s for s in superheroes if s["nombre"] != "Linterna Verde"]
+list_superhero = LinkedList()
+for nombre, año, casa, bio in data:
+    list_superhero.append(Superhero(nombre, año, casa, bio))
 
-#Subindice B. el año de aparición de Wolverine
-for s in superheroes:
-    if s["nombre"] == "Wolverine":
-        print("b) Wolverine apareció en:", s["anio"])
+# Subindice A) Eliminar Linterna Verde
 
-#Subindice C. cambiarle la casa de Dr. Strange
-for s in superheroes:
-    if s["nombre"] == "Dr. Strange":
-        s["casa"] = "Marvel"
+print("#A eliminar a Linterna Verde")
+print(list_superhero.delete_value('Linterna Verde', 'name'))
+print()
 
-#Subindice D. Listar nombres que contengan la palabra "traje" o "armadura"
-print("\nd) Superhéroes con 'traje' o 'armadura':")
-for s in superheroes:
-    if "traje" in s["bio"].lower() or "armadura" in s["bio"].lower():
-        print("-", s["nombre"])
+# Subindice B) Mostrar año aparición de Wolverine
+print("#B año de aparición de Wolverine")
+index = list_superhero.search('Wolverine', 'name')
+if index is not None:
+    print(list_superhero[index].first_appearance)
+else:
+    print("El superhéroe no está en la lista.")
+print()
 
-#Subindice E. nombre y casa de los anteriores a 1963
-print("\ne) Superhéroes con aparición antes de 1963:")
-for s in superheroes:
-    if s["anio"] < 1963:
-        print("-", s["nombre"], "(", s["casa"], ")")
+# Subindice C) Cambiar la casa de Dr. Strange a Marvel
 
-#Subindice F. casa de Capitana Marvel y Mujer Maravilla
-print("\nf) Casas de:")
-for s in superheroes:
-    if s["nombre"] in ["Capitana Marvel", "Mujer Maravilla"]:
-        print("-", s["nombre"], ":", s["casa"])
+print("#C cambiar casa de Dr. Strange a Marvel")
+index = list_superhero.search('Dr. Strange', 'name')
+if index is not None:
+    hero = list_superhero[index]
+    hero.comic_house = 'DC'
+    print("Nueva casa:", hero.comic_house)
+else:
+    print("Dr. Strange no está en la lista.")
+print()
 
-#Subindice G. toda la info de Flash y Star-Lord
-print("\ng) Información de Flash y Star-Lord:")
-for s in superheroes:
-    if s["nombre"] in ["Flash", "Star-Lord"]:
-        print(s)
+# Subindice D) Mostrar héroes que mencionan “traje” o “armadura”
 
-#Subindice H. listar los que empiezan con B, M o S
-print("\nh) Superhéroes que empiezan con B, M o S:")
-for s in superheroes:
-    if s["nombre"][0] in ["B", "M", "S"]:
-        print("-", s["nombre"])
+print("#D héroes con 'traje' o 'armadura' en la biografía:")
+for hero in list_superhero:
+    if 'traje' in hero.short_bio.lower() or 'armadura' in hero.short_bio.lower():
+        print("-", hero.name)
+print()
 
-# i. cantidad de superhéroes por casa
-conteo = {}
-for s in superheroes:
-    conteo[s["casa"]] = conteo.get(s["casa"], 0) + 1
+# Subindice E) Héroes con fecha anterior a 1963
 
-print("\ni) Cantidad por casa:", conteo)
+print("#E héroes anteriores a 1963:")
+for hero in list_superhero:
+    if hero.first_appearance < 1963:
+        print(f"- {hero.name} ({hero.comic_house})")
+print()
+
+# Subindice F) Casa de Capitana Marvel y Mujer Maravilla
+
+print("#F casa de Capitana Marvel y Mujer Maravilla:")
+for name in ["Capitana Marvel", "Mujer Maravilla"]:
+    idx = list_superhero.search(name, "name")
+    if idx is not None:
+        print(f"{name}: {list_superhero[idx].comic_house}")
+print()
+
+# Subindice G) Información completa de Flash y Star-Lord
+
+print("#G información de Flash y Star-Lord:")
+for name in ["Flash", "Star-Lord"]:
+    idx = list_superhero.search(name, "name")
+    if idx is not None:
+        hero = list_superhero[idx]
+        print(f"\n{name}:")
+        print(f"  Año: {hero.first_appearance}")
+        print(f"  Casa: {hero.comic_house}")
+        print(f"  Bio: {hero.short_bio}")
+print()
+
+# Subindice H) Héroes que comienzan con B, M o S
+
+print("#H héroes que comienzan con B, M o S:")
+for hero in list_superhero:
+    if hero.name.startswith(("B", "M", "S")):
+        print("-", hero.name)
+print()
+
+# Subindice I) Cantidad de superhéroes por casa
+
+print("#I cantidad de superhéroes por casa:")
+conteo = {"Marvel": 0, "DC": 0}
+for hero in list_superhero:
+    if hero.comic_house in conteo:
+        conteo[hero.comic_house] += 1
+for casa, cantidad in conteo.items():
+    print(f"{casa}: {cantidad}")
