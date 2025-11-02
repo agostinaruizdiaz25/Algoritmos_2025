@@ -50,7 +50,7 @@ jedi = [
     },
 ]
 
-# Subindice A. listado ordenado por nombre y especie
+# Subindice A. listado ordenado por nombre
 def listado_ordenado(jedi):
     print("\n--- Ordenado por nombre ---")
     for j in sorted(jedi, key=lambda x: x["nombre"]):
