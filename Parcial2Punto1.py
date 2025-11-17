@@ -1,3 +1,4 @@
+#Parcial2Punto1 
 class Node:
     def __init__(self, key, pokemon_data):
         self.key = key                   # clave de ordenamiento (nombre, número o tipo)
