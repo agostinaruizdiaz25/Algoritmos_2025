@@ -9,7 +9,7 @@ class Grafo:
         if v not in self.vertices:
             self.vertices[v] = []
 
-    #Subindice b) Agregar aristas con su distancia (peso. Se carga un grafo NO dirigido)
+    #Subindice b) Agregar aristas con su distancia peso. (Se carga un grafo NO dirigido)
     def agregar_arista(self, v1, v2, peso):
         self.vertices[v1].append((v2, peso))
         self.vertices[v2].append((v1, peso))
@@ -20,7 +20,7 @@ class Grafo:
         for v in self.vertices:
             print(v, ":", self.vertices[v])
 
-    #Subindice c) Árbol de Expansión Mínima. Estructuras para Union-Find (Disjoint Set)
+    #Subindice c) Árbol de Expansión Mínima. Estructuras para Union-Find
     def find(self, padres, x):
         if padres[x] != x:
             padres[x] = self.find(padres, padres[x])
@@ -96,7 +96,7 @@ class Grafo:
         camino.reverse()
         return camino
 
-# a) Crear el grafo y sus vértices (ambientes de la casa)
+# muestra del subindice a) Crear el grafo y sus vértices (ambientes de la casa)
 g = Grafo()
 ambientes = [
     "cocina", "comedor", "cochera", "quincho", "baño1", "baño2",
@@ -106,7 +106,7 @@ ambientes = [
 for amb in ambientes:
     g.agregar_vertice(amb)
 
-# b) Cargar aristas con distancia (al menos 3 por ambiente. Ejemplo con distancias ficticias)
+# muestra del subindice b) Cargar aristas con distancia (al menos 3 por ambiente. Ejemplo con distancias ficticias)
 g.agregar_arista("cocina", "comedor", 4)
 g.agregar_arista("cocina", "patio", 7)
 g.agregar_arista("cocina", "baño1", 3)
@@ -131,7 +131,7 @@ g.agregar_arista("sala_de_estar", "terraza", 7)
 g.agregar_arista("sala_de_estar", "patio", 13)
 g.agregar_arista("patio", "terraza", 8)
 
-# c) Aplicar KRUSKAL → obtener el MST y metros totales
+# muestra del subindice c) Aplicar KRUSKAL para obtener el MST y metros totales
 mst, total_metros = g.kruskal()
 
 print("\n Árbol de Expansión Mínima")
@@ -140,7 +140,7 @@ for v1, v2, peso in mst:
 
 print(f"\nMetros totales de cables necesarios: {total_metros} m")
 
-# d) Camino MÁS CORTO entre habitación1 y sala_de_estar
+# muestra del subindice d) Camino MÁS CORTO entre habitación1 y sala_de_estar
 dist, anterior = g.dijkstra("habitacion1")
 camino = g.reconstruir_camino(anterior, "habitacion1", "sala_de_estar")
 
